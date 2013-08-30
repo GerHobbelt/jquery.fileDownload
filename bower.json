@@ -1,0 +1,5 @@
+{
+  "name": "jquery.fileDownload",
+  "version": "1.4.2",
+  "main": "src/Scripts/jquery.fileDownload.js"
+}
