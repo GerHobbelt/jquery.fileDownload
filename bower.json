@@ -1,5 +1,5 @@
 {
-  "name": "jquery.fileDownload",
   "version": "1.4.2",
+  "name": "jquery.fileDownload",
   "main": "src/Scripts/jquery.fileDownload.js"
 }
