@@ -119,7 +119,14 @@ $.extend({
             //Note that some browsers will POST the string htmlentity-encoded whilst others will decode it before POSTing.
             //It is recommended that on the server, htmlentity decoding is done irrespective.
             //
-            encodeHTMLEntities: true
+            encodeHTMLEntities: true,
+            
+            //frameId
+            // If you have many download link in your page, you must use it to avoid concurrent problem.
+            frameId : undefined,
+            
+            //set the timeout of cleanUp function, the value should > 0 for browser latency
+            timeout: 0
             
         }, options);
 
@@ -260,6 +267,9 @@ $.extend({
                     .hide()
                     .prop("src", fileUrl)
                     .appendTo("body");
+                
+                if(settings.frameId)
+                	 $iframe.attr("id", settings.frameId);
             }
 
         } else {
@@ -299,7 +309,9 @@ $.extend({
 
                 } else {
 
-                    $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
+                   $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
+                   if(settings.frameId)
+                	 $iframe.attr("id", settings.frameId);
                     formDoc = getiframeDocument($iframe);
                 }
 
@@ -404,13 +416,15 @@ $.extend({
                     }
                 }
                 
+                if(settings.frameId && $('#'+settings.frameId).length > 0)
+                	$('#'+settings.frameId).remove();
                 //iframe cleanup appears to randomly cause the download to fail
                 //not doing it seems better than failure...
                 //if ($iframe) {
                 //    $iframe.remove();
                 //}
 
-            }, 0);
+            }, settings.timeout); //browser latency
         }
 
 
