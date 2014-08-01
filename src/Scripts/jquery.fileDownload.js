@@ -1,6 +1,6 @@
 /*
 * jQuery File Download Plugin v1.4.2 
-*
+** Made AMD Compliant
 * http://www.johnculviner.com
 *
 * Copyright (c) 2013 - John Culviner
@@ -21,7 +21,7 @@
     }
     else {
         if (typeof window.jQuery === 'undefined') {
-            throw new ReferenceError('Cannot find jQuery; daterangepicker requires jQuery.');
+            throw new ReferenceError('Dependency Not Found: jQuery');
         }
 
         factory(window.jQuery);
