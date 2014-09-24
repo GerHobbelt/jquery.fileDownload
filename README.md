@@ -34,3 +34,14 @@ https://github.com/johnculviner/jquery.fileDownload/blob/master/src/Scripts/jque
 The [`jquery_file_download-rails`](https://github.com/rcook/jquery_file_download-rails)
 gem integrates `jquery.fileDownload.js` into the Rails 3.1+ asset pipeline.
 
+
+## Extra: alternatives / older solutions
+
+See these for other solutions and some minimal pro/con discussions:
+
+- http://stackoverflow.com/questions/3499597/javascript-jquery-to-download-file-via-post-with-json-data
+
+- http://stackoverflow.com/questions/16086162/handle-file-download-from-ajax-post
+
+  (Note in particular the answer there which uses the new JavaScript File API)
+
