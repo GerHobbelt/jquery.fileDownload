@@ -185,9 +185,9 @@
 
             //
             // timeout -- In milliseconds, time to wait for the file to download, after which failCallback is called.
-            // By default (null), timeout is not enabled.
+            // By default (0), timeout is not enabled.
             //
-            timeout: null,
+            timeout: 0,
         }, options);
 
         // generate automatic sequence number for the iframe, form, etc., safe even when we start multiple downloads all at once:
@@ -492,16 +492,14 @@
             }
 
             timePassed += settings.checkInterval;
-            if (settings.timeout == null || (timePassed < settings.timeout)) {
-                //no timeout defined. continue checking...
+            if (!settings.timeout || timePassed < settings.timeout) {
+                //no timeout defined or timeout not yet expired: continue checking...
                 setTimeout(checkFileDownloadComplete, settings.checkInterval);
             } else {
                 //oops -- timed out.
-                internalCallbacks.onFail('', fileUrl);
+                internalCallbacks.onFail('', fileUrl, 'Download aborted: timeout expired while waiting for download to complete.');
 
                 cleanUp(true);
-
-                return;
             }
         }
 
