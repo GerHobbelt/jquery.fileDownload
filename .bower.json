@@ -1,0 +1,24 @@
+{
+  "name": "jquery-fileDownload",
+   "main": "jquery.fileDownload.js",
+   "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~1.10"
+  },
+  "homepage": "https://github.com/rishi-rana/jquery.fileDownload",
+  "_release": "5f12dd2ac9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "5f12dd2ac998cc2165c38e47735306e8b8a13204"
+  },
+  "_source": "https://github.com/rishi-rana/jquery.fileDownload.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/rishi-rana/jquery.fileDownload.git"
+}
