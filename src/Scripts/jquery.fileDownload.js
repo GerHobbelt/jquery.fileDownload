@@ -148,13 +148,22 @@ $.extend({
             //
             encodeHTMLEntities: true,
             
-            //frameId
-            // If you have many download link in your page, you must use it to avoid concurrent problem.
-            frameId : undefined,
+            //
+            // If you have many download links in your page, you must use this to avoid concurrent downloads collision problems.
+            //
+            frameId: undefined,
             
-            //set the timeout of cleanUp function, the value should > 0 for browser latency
-            timeout: 0
+            //
+            // Set the timeout of the iframe cleanUp function: the value should be > 0 to account for browser latency
+            // 
+            frameCleanupTimeout: 0,
             
+            //
+            //iframe cleanup appears to randomly cause the download to fail.
+            //Not doing it seems better than failure.
+            //
+            cleanupDownloadIframes: false,
+
         }, options);
 
         var deferred = new $.Deferred();
@@ -284,6 +293,7 @@ $.extend({
 
             if (isIos || isAndroid) {
 
+                destroyDownloadHelpers(true);
                 downloadWindow = window.open(fileUrl);
                 downloadWindow.document.title = settings.popupWindowTitle;
                 window.focus();
@@ -294,14 +304,17 @@ $.extend({
 
             } else {
 
+                destroyDownloadHelpers(true);
+
                 //create a temporary iframe that is used to request the fileUrl as a GET request
                 $iframe = $("<iframe>")
                     .hide()
                     .prop("src", fileUrl)
                     .appendTo("body");
                 
-                if(settings.frameId)
-                	 $iframe.attr("id", settings.frameId);
+                if (settings.frameId) {
+                	$iframe.attr("id", settings.frameId);
+                }
             }
 
         } else {
@@ -337,6 +350,7 @@ $.extend({
 
                 if (isIos) {
 
+                    destroyDownloadHelpers(true);
                     downloadWindow = window.open("about:blank");
                     downloadWindow.document.title = settings.popupWindowTitle;
                     formDoc = downloadWindow.document;
@@ -344,9 +358,11 @@ $.extend({
 
                 } else {
 
-                   $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
-                   if(settings.frameId)
-                	 $iframe.attr("id", settings.frameId);
+                    destroyDownloadHelpers(true);
+                    $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
+                    if (settings.frameId) {
+                	   $iframe.attr("id", settings.frameId);
+                    }
                     formDoc = getiframeDocument($iframe);
                 }
 
@@ -380,8 +396,8 @@ $.extend({
                 return;
             }
 
-            //has an error occured?
-            //if neither containers exist below then the file download is occuring on the current window
+            //has an error occurred?
+            //if neither containers exist below then the file download is occurring on the current window
             if (downloadWindow || $iframe) {
 
                 //has an error occured?
@@ -425,7 +441,7 @@ $.extend({
                                 }
                             }
  
-                            // IE 8-10 don't always have the full content available right away, they need a litle bit to finish
+                            // IE 8-10 don't always have the full content available right away, they need a little bit to finish
                             setTimeout(function () {
                                 internalCallbacks.onFail(formDoc.body.innerHTML, fileUrl, failReason);
 
@@ -461,35 +477,48 @@ $.extend({
             return iframeDoc;
         }
 
+        function destroyDownloadHelpers(forceCleanup) {
+
+            if (downloadWindow) {
+
+                if (isAndroid) {
+                    downloadWindow.close();
+                    downloadWindow = null;
+                }
+
+                if (isIos) {
+                    if (downloadWindow.focus) {
+                        downloadWindow.focus(); //ios safari bug doesn't allow a window to be closed unless it is focused
+                        if (forceCleanup) {
+                            downloadWindow.close();
+                            downloadWindow = null;
+                        }
+                    }
+                }
+            }
+            
+            //iframe cleanup appears to randomly cause the download to fail
+            //not doing it seems better than failure...
+            if (forceCleanup || settings.cleanupDownloadIframes) {
+                // just to be sure: kill any ID which is colliding with ours
+                if (!$iframe && settings.frameId) {
+                    $iframe = $('#' + settings.frameId);
+                }
+                
+                if ($iframe && $iframe.length > 0) {
+                    $iframe.remove();
+                }
+                $iframe = null;
+            }
+        }
+
         function cleanUp(isFailure) {
 
             setTimeout(function() {
 
-                if (downloadWindow) {
+                destroyDownloadHelpers(isFailure);
 
-                    if (isAndroid) {
-                        downloadWindow.close();
-                    }
-
-                    if (isIos) {
-                        if (downloadWindow.focus) {
-                            downloadWindow.focus(); //ios safari bug doesn't allow a window to be closed unless it is focused
-                            if (isFailure) {
-                                downloadWindow.close();
-                            }
-                        }
-                    }
-                }
-                
-                if(settings.frameId && $('#'+settings.frameId).length > 0)
-                	$('#'+settings.frameId).remove();
-                //iframe cleanup appears to randomly cause the download to fail
-                //not doing it seems better than failure...
-                //if ($iframe) {
-                //    $iframe.remove();
-                //}
-
-            }, settings.timeout); //browser latency
+            }, settings.frameCleanupTimeout); //browser latency
         }
 
 
