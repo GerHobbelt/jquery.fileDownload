@@ -35,22 +35,22 @@
 }(this, function (window, $) {
 
 // i'll just put them here to get evaluated on script load
-	var htmlSpecialCharsRegEx = /[<>&\r\n"']/gm;
-	var htmlSpecialCharsPlaceHolders = {
-				'<': 'lt;',
-				'>': 'gt;',
-				'&': 'amp;',
-				'\r': "#13;",
-				'\n': "#10;",
-				'"': 'quot;',
-				"'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
-	};
+var htmlSpecialCharsRegEx = /[<>&\r\n"']/gm;
+var htmlSpecialCharsPlaceHolders = {
+			'<': 'lt;',
+			'>': 'gt;',
+			'&': 'amp;',
+			'\r': "#13;",
+			'\n': "#10;",
+			'"': 'quot;',
+			"'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
+};
 
-    $.extend({
-        //
-        //$.fileDownload('/path/to/url/', options)
-        //  see directly below for possible 'options'
-        fileDownload: function (fileUrl, options) {
+$.extend({
+    //
+    //$.fileDownload('/path/to/url/', options)
+    //  see directly below for possible 'options'
+    fileDownload: function (fileUrl, options) {
 
         //provide some reasonable defaults to any unspecified options below
         var settings = $.extend({
@@ -369,7 +369,7 @@
             if (isOtherMobileBrowser) {
 
                 $form = $("<form>")
-                    .attr('id', 'DLform.' + frameId);
+                    .attr('id', 'DLform.' + frameId)
                     .appendTo("body");
                 $form.hide()
                 .prop('method', settings.httpMethod)
@@ -565,6 +565,7 @@
         }
 
         return deferred.promise();
-};
+    }
+});
 
 }));
