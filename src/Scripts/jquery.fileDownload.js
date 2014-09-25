@@ -166,6 +166,11 @@ $.extend({
 
         }, options);
 
+        // generate automatic sequence number for the iframe, form, etc., safe even when we start multiple downloads all at once:
+        window.__jq_file_download_instance_counter__ = (window.__jq_file_download_instance_counter__ || 0) + 1;
+        
+        var frameId = (settings.frameId || 'jqfDL.' + Date.now() + '.' + window.__jq_file_download_instance_counter__);
+
         var deferred = new $.Deferred();
 
         //Setup mobile browser detection: Partial credit: http://detectmobilebrowser.com/
@@ -229,7 +234,7 @@ $.extend({
 
             onSuccess: function (url) {
 
-                //remove the perparing message if it was specified
+                //remove the preparing message if it was specified
                 if ($preparingDialog) {
                     $preparingDialog.dialog('close');
                 };
@@ -312,9 +317,7 @@ $.extend({
                     .prop("src", fileUrl)
                     .appendTo("body");
                 
-                if (settings.frameId) {
-                	$iframe.attr("id", settings.frameId);
-                }
+            	$iframe.attr("id", frameId);
             }
 
         } else {
@@ -340,7 +343,9 @@ $.extend({
 
             if (isOtherMobileBrowser) {
 
-                $form = $("<form>").appendTo("body");
+                $form = $("<form>")
+                    .attr('id', 'DLform.' + frameId);
+                    .appendTo("body");
                 $form.hide()
                     .prop('method', settings.httpMethod)
                     .prop('action', fileUrl)
@@ -360,14 +365,12 @@ $.extend({
 
                     destroyDownloadHelpers(true);
                     $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
-                    if (settings.frameId) {
-                	   $iframe.attr("id", settings.frameId);
-                    }
+            	    $iframe.attr("id", frameId);
                     formDoc = getiframeDocument($iframe);
                 }
 
-                formDoc.write("<html><head></head><body><form method='" + settings.httpMethod + "' action='" + fileUrl + "'>" + formInnerHtml + "</form>" + settings.popupWindowTitle + "</body></html>");
-                $form = $(formDoc).find('form');
+                formDoc.write("<html><head></head><body><form id='DLform." + frameId + "' method='" + settings.httpMethod + "' action='" + fileUrl + "'>" + formInnerHtml + "</form>" + settings.popupWindowTitle + "</body></html>");
+                $form = $(formDoc).find('#DLform.' + frameId);
             }
 
             $form.submit();
@@ -500,15 +503,16 @@ $.extend({
             //iframe cleanup appears to randomly cause the download to fail
             //not doing it seems better than failure...
             if (forceCleanup || settings.cleanupDownloadIframes) {
-                // just to be sure: kill any ID which is colliding with ours
-                if (!$iframe && settings.frameId) {
-                    $iframe = $('#' + settings.frameId);
-                }
-                
                 if ($iframe && $iframe.length > 0) {
                     $iframe.remove();
                 }
                 $iframe = null;
+
+                // just to be sure: kill any ID which is colliding with ours
+                var $el = $('#' + frameId);
+                $el.remove();
+                $el = $('#DLform.' + frameId);
+                $el.remove();
             }
         }
 
