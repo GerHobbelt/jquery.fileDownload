@@ -4,7 +4,12 @@ $id = intval($_REQUEST['id']);
 
 if ($id % 2 === 0)
 {
-    $file_name = '../../src/Report.pdf';
+    // For performance testing: try a 500+ MB PDF first (as that surely will exhaust RAM for any 'naive' PHP copy implementations):
+    $file_name = './Digital Design - Principles And Practices 4th Edition by John F Wakerly.pdf';
+    if (!file_exists($file_name))
+    {
+        $file_name = '../../src/Report.pdf';
+    }
 
     // As per:
     //     http://stackoverflow.com/questions/3697748/fastest-way-to-serve-a-file-using-php
@@ -44,6 +49,9 @@ if ($id % 2 === 0)
             header('Content-Length: ' . filesize($file_name));
             // http://php.net/manual/en/function.virtual.php
             apache_setenv('PHP_ALLOW', '1');
+            //
+            // Note: Performance test: as mentioned elsewhere on the web, virtual() is the fastest kid on the block, matching 'static file' native server speeds. :-)
+            // 
             // @readfile($file_name);
             if (virtual($file_name))
             {
