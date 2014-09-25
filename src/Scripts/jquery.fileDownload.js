@@ -9,7 +9,7 @@
 *   http://www.opensource.org/licenses/mit-license.php
 *
 * !!!!NOTE!!!!
-* You must also write a cookie in conjunction with using this plugin as mentioned in the orignal post:
+* You must also write a cookie in conjunction with using this plugin as mentioned in the original post:
 * http://johnculviner.com/jquery-file-download-plugin-for-ajax-like-feature-rich-file-downloads/
 * !!!!NOTE!!!!
 */
@@ -24,7 +24,7 @@
 				'\r': "#13;",
 				'\n': "#10;",
 				'"': 'quot;',
-				"'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
+				"'": '#39;' /* single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
 	};
 
 $.extend({
@@ -79,8 +79,9 @@ $.extend({
             //                      in less than IE9 a cross domain error occurs because 500+ errors cause a cross domain issue due to IE subbing out the
             //                      server's error message with a "helpful" IE built in message
             //  url             - the original url attempted
+            //  failReason      - the reason provided within the response cookie (may be empty, e.g. when an internal error occurred)
             //
-            failCallback: function (responseHtml, url) { },
+            failCallback: function (responseHtml, url, failReason) { },
 
             //
             // the HTTP method to use. Defaults to "GET".
@@ -107,6 +108,11 @@ $.extend({
             //the cookie value for the above name to indicate that a file download has occured
             //
             cookieValue: "true",
+
+            //
+            //the cookie name to provide a reason if failure
+            //
+            cookieNameFailReason: "fileDownloadFailureReason",
 
             //
             //the cookie path for above name value pair
@@ -217,7 +223,7 @@ $.extend({
                 deferred.resolve(url);
             },
 
-            onFail: function (responseHtml, url) {
+            onFail: function (responseHtml, url, failReason) {
 
                 //remove the perparing message if it was specified
                 if ($preparingDialog) {
@@ -229,7 +235,7 @@ $.extend({
                     $("<div>").html(settings.failMessageHtml).dialog(settings.dialogOptions);
                 }
 
-                settings.failCallback(responseHtml, url);
+                settings.failCallback(responseHtml, url, failReason);
                 
                 deferred.reject(responseHtml, url);
             }
@@ -393,9 +399,24 @@ $.extend({
                         }
 
                         if (isFailure) {
+                            var failreasonIndex = document.cookie.indexOf(settings.cookieNameFailReason);
+                            var failReason = undefined;
+                            if (failreasonIndex != -1) {
+                                var i, x, y, ARRcookies = document.cookie.split(";");
+                                for (i = 0; i < ARRcookies.length; i++) {
+                                    x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+                                    y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+                                    x = x.replace(/^\s+|\s+$/g, "");
+                                    if (x === settings.cookieNameFailReason) {
+                                        failReason = unescape(y);
+                                    }
+                                }
+                            }
+ 
                             // IE 8-10 don't always have the full content available right away, they need a litle bit to finish
                             setTimeout(function () {
-                                internalCallbacks.onFail(formDoc.body.innerHTML, fileUrl);
+                                internalCallbacks.onFail(formDoc.body.innerHTML, fileUrl, failReason);
+
                                 cleanUp(true);
                             }, 100);
                             
@@ -406,7 +427,7 @@ $.extend({
                 catch (err) {
 
                     //500 error less than IE9
-                    internalCallbacks.onFail('', fileUrl);
+                    internalCallbacks.onFail('', fileUrl, '');
 
                     cleanUp(true);
 
