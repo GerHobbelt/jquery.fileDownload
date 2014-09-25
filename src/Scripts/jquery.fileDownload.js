@@ -120,6 +120,16 @@ $.extend({
             cookieDomain: null,
 
             //
+            // anti-CSRF 'secret' token value
+            // 
+            csrf_token: null,
+
+            //
+            // anti-CSRF 'secret' token ID: the id/name of the anti-CSRF hidden form field expected by your server-side code.
+            // 
+            csrf_token_id: '_csrf_token',
+
+            //
             //the title for the popup second window as a download is processing in the case of a mobile browser
             //
             popupWindowTitle: "Initiating file download...",
@@ -286,11 +296,10 @@ $.extend({
                     var key = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[0])) : decodeURIComponent(kvp[0]);
                     if (key) {
                         var value = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[1])) : decodeURIComponent(kvp[1]);
-                    formInnerHtml += '<input type="hidden" name="' + key + '" value="' + value + '" />';
-                    if(settings._csrf_token){
-                        formInnerHtml += '<input type="hidden" value="'+settings._csrf_token+'" id="_csrf_token" name="_csrf_token">';            
-                    }
-
+                        formInnerHtml += '<input type="hidden" name="' + key + '" value="' + value + '" />';
+                        if (settings.csrf_token) {
+                            formInnerHtml += '<input type="hidden" value="' + settings.csrf_token + '" id="' + settings.csrf_token_id + '" name="' + settings.csrf_token_id + '">';            
+                        }
                     }
                 });
             }
