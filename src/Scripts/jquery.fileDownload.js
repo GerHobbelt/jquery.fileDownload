@@ -1,5 +1,5 @@
 /*
-* jQuery File Download Plugin v1.4.2 
+* jQuery File Download Plugin v1.4.2
 *
 * http://www.johnculviner.com
 *
@@ -37,13 +37,13 @@
 // i'll just put them here to get evaluated on script load
 var htmlSpecialCharsRegEx = /[<>&\r\n"']/gm;
 var htmlSpecialCharsPlaceHolders = {
-			'<': 'lt;',
-			'>': 'gt;',
-			'&': 'amp;',
-			'\r': "#13;",
-			'\n': "#10;",
-			'"': 'quot;',
-			"'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
+            '<': 'lt;',
+            '>': 'gt;',
+            '&': 'amp;',
+            '\r': "#13;",
+            '\n': "#10;",
+            '"': 'quot;',
+            "'": '#39;' /*single quotes just to be safe, IE8 doesn't support &apos;, so use &#39; instead */
 };
 
 $.extend({
@@ -78,7 +78,7 @@ $.extend({
             dialogOptions: { modal: true },
 
             //
-            //a function to call while the dowload is being prepared before the browser's dialog appears
+            //a function to call while the download is being prepared before the browser's dialog appears
             //Args:
             //  url - the original url attempted
             //
@@ -95,8 +95,8 @@ $.extend({
             //a function to call after a file download dialog/ribbon has appeared
             //Args:
             //  responseHtml    - the html that came back in response to the file download. this won't necessarily come back depending on the browser.
-            //                      in less than IE9 a cross domain error occurs because 500+ errors cause a cross domain issue due to IE subbing out the
-            //                      server's error message with a "helpful" IE built in message
+            //                    in less than IE9 a cross domain error occurs because 500+ errors cause a cross domain issue due to IE subbing out the
+            //                    server's error message with a "helpful" IE built in message
             //  url             - the original url attempted
             //  failReason      - the reason provided within the response cookie (may be empty, e.g. when an internal error occurred)
             //
@@ -114,17 +114,17 @@ $.extend({
             data: null,
 
             //
-            //a period in milliseconds to poll to determine if a successful file download has occured or not
+            //a period in milliseconds to poll to determine if a successful file download has occurred or not
             //
             checkInterval: 100,
 
             //
-            //the cookie name to indicate if a file download has occured
+            //the cookie name to indicate if a file download has occurred
             //
             cookieName: "fileDownload",
 
             //
-            //the cookie value for the above name to indicate that a file download has occured
+            //the cookie value for the above name to indicate that a file download has occurred
             //
             cookieValue: "true",
 
@@ -138,20 +138,20 @@ $.extend({
             //
             cookiePath: "/",
 
-                //
-                //if specified it will be used when attempting to clear the above name value pair
-                //useful for when downloads are being served on a subdomain (e.g. downloads.example.com)
-                //	
-                cookieDomain: null,
+            //
+            //if specified it will be used when attempting to clear the above name value pair
+            //useful for when downloads are being served on a subdomain (e.g. downloads.example.com)
+            //
+            cookieDomain: null,
 
             //
             // anti-CSRF 'secret' token value
-            // 
+            //
             csrf_token: null,
 
             //
             // anti-CSRF 'secret' token ID: the id/name of the anti-CSRF hidden form field expected by your server-side code.
-            // 
+            //
             csrf_token_id: '_csrf_token',
 
             //
@@ -171,12 +171,12 @@ $.extend({
             // If you have many download links in your page, you must use this to avoid concurrent downloads collision problems.
             //
             frameId: undefined,
-            
+
             //
             // Set the timeout of the iframe cleanUp function: the value should be > 0 to account for browser latency
-            // 
+            //
             frameCleanupTimeout: 0,
-            
+
             //
             //iframe cleanup appears to randomly cause the download to fail.
             //Not doing it seems better than failure.
@@ -192,7 +192,7 @@ $.extend({
 
         // generate automatic sequence number for the iframe, form, etc., safe even when we start multiple downloads all at once:
         window.__jq_file_download_instance_counter__ = (window.__jq_file_download_instance_counter__ || 0) + 1;
-        
+
         var frameId = (settings.frameId || 'jqfDL.' + Date.now() + '.' + window.__jq_file_download_instance_counter__);
 
         var deferred = new $.Deferred();
@@ -262,7 +262,7 @@ $.extend({
                 //remove the preparing message if it was specified
                 if ($preparingDialog) {
                     $preparingDialog.dialog('close');
-                };
+                }
 
                 settings.successCallback(url);
 
@@ -274,7 +274,7 @@ $.extend({
                 //remove the perparing message if it was specified
                 if ($preparingDialog) {
                     $preparingDialog.dialog('close');
-                };
+                }
 
                 //wire up a jquery dialog to display the fail message if specified
                 if (settings.failMessageHtml) {
@@ -296,9 +296,9 @@ $.extend({
 
 
         var $iframe,
-        downloadWindow,
-        formDoc,
-        $form;
+            downloadWindow,
+            formDoc,
+            $form;
 
         if (httpMethodUpper === "GET") {
 
@@ -314,7 +314,6 @@ $.extend({
                         fileUrl = fileUrl + "&";
                     }
                 } else {
-
                     fileUrl = fileUrl + "?";
                 }
 
@@ -338,11 +337,11 @@ $.extend({
 
                 //create a temporary iframe that is used to request the fileUrl as a GET request
                 $iframe = $("<iframe>")
-                .hide()
-                .prop("src", fileUrl)
-                .appendTo("body");
-                
-            	$iframe.attr("id", frameId);
+                    .hide()
+                    .prop("src", fileUrl)
+                    .appendTo("body");
+
+                $iframe.attr("id", frameId);
             }
 
         } else {
@@ -360,9 +359,9 @@ $.extend({
                         var value = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[1])) : decodeURIComponent(kvp[1]);
                             formInnerHtml += '<input type="hidden" name="' + key + '" value="' + value + '" />';
                         if (settings.csrf_token) {
-                            formInnerHtml += '<input type="hidden" value="' + settings.csrf_token + '" id="' + settings.csrf_token_id + '" name="' + settings.csrf_token_id + '">';            
+                            formInnerHtml += '<input type="hidden" value="' + settings.csrf_token + '" id="' + settings.csrf_token_id + '" name="' + settings.csrf_token_id + '">';
                         }
-                }
+                    }
                 });
             }
 
@@ -372,9 +371,9 @@ $.extend({
                     .attr('id', 'DLform.' + frameId)
                     .appendTo("body");
                 $form.hide()
-                .prop('method', settings.httpMethod)
-                .prop('action', fileUrl)
-                .html(formInnerHtml);
+                    .prop('method', settings.httpMethod)
+                    .prop('action', fileUrl)
+                    .html(formInnerHtml);
 
             } else {
 
@@ -390,8 +389,9 @@ $.extend({
 
                     destroyDownloadHelpers(true);
                     $iframe = $("<iframe style='display: none' src='about:blank'></iframe>").appendTo("body");
-            	    $iframe.attr("id", frameId);
+                    $iframe.attr("id", frameId);
                     formDoc = getiframeDocument($iframe);
+
                 }
 
                 formDoc.write("<html><head></head><body><form id='DLform." + frameId + "' method='" + settings.httpMethod + "' action='" + fileUrl + "'>" + formInnerHtml + "</form>" + settings.popupWindowTitle + "</body></html>");
@@ -413,12 +413,14 @@ $.extend({
                 //execute specified callback
                 internalCallbacks.onSuccess(fileUrl);
 
-                    //remove cookie
-                    var cookieData = settings.cookieName + "=; path=" + settings.cookiePath + "; expires=" + new Date(0).toUTCString() + ";";
-                    if (settings.cookieDomain) cookieData += " domain=" + settings.cookieDomain + ";";
-                    document.cookie = cookieData;
+                //remove cookie
+                var cookieData = settings.cookieName + "=; path=" + settings.cookiePath + "; expires=" + new Date(0).toUTCString() + ";";
+                if (settings.cookieDomain) {
+                    cookieData += " domain=" + settings.cookieDomain + ";";
+                }
+                document.cookie = cookieData;
 
-                    //remove iframe
+                //remove iframe
                 cleanUp(false);
 
                 return;
@@ -440,18 +442,18 @@ $.extend({
                         if ($form && $form.length) {
                             var $contents = $(formDoc.body).contents().first();
 
-                                try {
+                            try {
                                 if ($contents.length && $contents[0] === $form[0]) {
                                     isFailure = false;
                                 }
-                                } catch (e) {
-                                    if (e && e.number == -2146828218) {
-                                        // IE 8-10 throw a permission denied after the form reloads on the "$contents[0] === $form[0]" comparison
-                                        isFailure = true;
-                                    } else {
-                                        throw e;
-                                    }
+                            } catch (e) {
+                                if (e && e.number == -2146828218) {
+                                    // IE 8-10 throw a permission denied after the form reloads on the "$contents[0] === $form[0]" comparison
+                                    isFailure = true;
+                                } else {
+                                    throw e;
                                 }
+                            }
                         }
 
                         if (isFailure) {
@@ -468,13 +470,13 @@ $.extend({
                                     }
                                 }
                             }
- 
+
                             // IE 8-10 don't always have the full content available right away, they need a little bit to finish
-                                setTimeout(function () {
+                            setTimeout(function () {
                                 internalCallbacks.onFail(formDoc.body.innerHTML, fileUrl, failReason);
 
                                 cleanUp(true);
-                                }, 100);
+                            }, 100);
 
                             return;
                         }
@@ -531,7 +533,7 @@ $.extend({
                         }
                     }
                 }
-                
+
                 //iframe cleanup appears to randomly cause the download to fail
                 //not doing it seems better than failure...
             if (forceCleanup || settings.cleanupDownloadIframes) {
@@ -561,7 +563,7 @@ $.extend({
         function htmlSpecialCharsEntityEncode(str) {
             return str.replace(htmlSpecialCharsRegEx, function(match) {
                 return '&' + htmlSpecialCharsPlaceHolders[match];
-        	});
+            });
         }
 
         return deferred.promise();

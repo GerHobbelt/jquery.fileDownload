@@ -19,7 +19,7 @@ namespace MvcDemo.Common
 
         /// <summary>
         /// If the current response is a FileResult (an MVC base class for files) then write a
-        /// cookie to inform jquery.fileDownload that a successful file download has occured
+        /// cookie to inform jquery.fileDownload that a successful file download has occurred
         /// </summary>
         /// <param name="filterContext"></param>
         private void CheckAndHandleFileResult(ActionExecutedContext filterContext)

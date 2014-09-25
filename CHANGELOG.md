@@ -2,24 +2,24 @@
 
 <h4>6/01/2013 - 1.4.1</h4>
 <ul>
-	<li>Merged pull fixing constant location. Thanks Djemo!</li>
-	<li>Added iframe removal after success/failure of download. Thanks for the idea joshua5822!</li>
+    <li>Merged pull fixing constant location. Thanks Djemo!</li>
+    <li>Added iframe removal after success/failure of download. Thanks for the idea joshua5822!</li>
 </ul>
 
 <h4>5/05/2013 - 1.4.0</h4>
 <ul>
-	<li>Added deferred support since promises are very useful and becoming ubiquitous</li>
-	<li>Removed default error message alert() as it conflicted with promise support which is more useful</li>
-	<li>Updated attr use to prop</li>
-	<li>Due to above points jQuery 1.6+ is now required</li>
-	<li>Merged in 'prepareCallback' - thanks loraderon</li>
-	<li>Merged in some changes for more concise and compressable JS - thanks LeoDutra</li>
+    <li>Added deferred support since promises are very useful and becoming ubiquitous</li>
+    <li>Removed default error message alert() as it conflicted with promise support which is more useful</li>
+    <li>Updated attr use to prop</li>
+    <li>Due to above points jQuery 1.6+ is now required</li>
+    <li>Merged in 'prepareCallback' - thanks loraderon</li>
+    <li>Merged in some changes for more concise and compressable JS - thanks LeoDutra</li>
 </ul>
 
 <h4>11/08/2012</h4>
 <ul>
-	<li>Replaced base controller in demo with FileDownloadAttribute that allows setting cookie name and path on a per action basis.
-	- contributed by https://github.com/rdefreitas</li>
+    <li>Replaced base controller in demo with FileDownloadAttribute that allows setting cookie name and path on a per action basis.
+    - contributed by https://github.com/rdefreitas</li>
 </ul>
 
 <h4>09/18/2012 - 1.3.3</h4>
@@ -30,8 +30,8 @@
 <h4>09/06/2012 - 1.3.2</h4>
 <ul>
     <li>Fixed a bug that intermittently occured in Firefox where a file download would complete but the built in browser save dialog would not appear</li>
-	<li>Merged in a pull from doronhorwitz surrounding special character encoding. Thanks doronhorwitz!</li>
-	<li>Added jQuery.noConflict() to avoid $ conflicts that were occuring for some users</li>
+    <li>Merged in a pull from doronhorwitz surrounding special character encoding. Thanks doronhorwitz!</li>
+    <li>Added jQuery.noConflict() to avoid $ conflicts that were occuring for some users</li>
 </ul>
 
 <h4>06/26/2012 - 1.3.1</h4>
@@ -42,7 +42,7 @@
 <h4>06/13/2012 - 1.3.0</h4>
 <ul>
     <li>Added mobile browser support. The Android browser is <a href="http://code.google.com/p/android/issues/detail?id=1780">unable</a> to support file downloads initiated by a non-GET requests</li>
-	<li>Thanks to <a href="https://github.com/itsadok">itsadok</a> for fixing a bug dealing with character encoding and escaping with non-GET requests</li>
+    <li>Thanks to <a href="https://github.com/itsadok">itsadok</a> for fixing a bug dealing with character encoding and escaping with non-GET requests</li>
 </ul>
 
 <h4>04/10/2012 - 1.2.1</h4>
