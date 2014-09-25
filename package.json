@@ -1,0 +1,38 @@
+{
+  "name": "jquery.fileDownload",
+  "version": "1.4.2",
+  "author": "John Culviner(http://johnculviner.com)",
+  "description": "A jQuery plugin that adds cross-browser AJAX-style download support",
+  "license": "MIT",
+  "homepage": "https://github.com/johnculviner/jquery.fileDownload",
+  "main": "./src/Scripts/jquery.fileDownload.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnculviner/jquery.fileDownload.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnculviner/jquery.fileDownload/issues"
+  },
+  "keywords": [
+    "jquery",
+    "file",
+    "download",
+    "ajax",
+    "plugin",
+    "browser"
+  ],
+  "files": [
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "devDependencies": {
+  },
+  "directories": {
+    "src": "src"
+  },
+  "jam": {
+    "dependencies": {
+      "jquery": ">=1.6.0"
+    }
+  }
+}
