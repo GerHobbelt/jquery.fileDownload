@@ -287,6 +287,10 @@ $.extend({
                     if (key) {
                         var value = settings.encodeHTMLEntities ? htmlSpecialCharsEntityEncode(decodeURIComponent(kvp[1])) : decodeURIComponent(kvp[1]);
                     formInnerHtml += '<input type="hidden" name="' + key + '" value="' + value + '" />';
+                    if(settings._csrf_token){
+                        formInnerHtml += '<input type="hidden" value="'+settings._csrf_token+'" id="_csrf_token" name="_csrf_token">';            
+                    }
+
                     }
                 });
             }
